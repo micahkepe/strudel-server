@@ -8,5 +8,8 @@
     "@playwright/test": "^1.54.1",
     "chokidar": "^4.0.3",
     "playwright": "^1.54.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0"
   }
 }

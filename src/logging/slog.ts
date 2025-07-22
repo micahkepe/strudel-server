@@ -2,6 +2,8 @@
  * slog - structured logging module
  */
 
+import { AnsiCodes } from "./colors";
+
 /**
  * The type of a key/value pair to be logged.
  */
@@ -34,17 +36,44 @@ export class SLog {
    * @param pairs structured pairs to be logged
    */
   private log(level: string, msg: string, pairs: Array<KVPair>) {
-    console.log(`START ${level}: ${msg}`);
+    // Determine the color of the level
+    let color: string;
+    switch (level) {
+      case "DEBUG":
+        color = AnsiCodes.BoldCyan;
+        break;
+      case "INFO":
+        color = AnsiCodes.BoldBlue;
+        break;
+      case "WARNING":
+        color = AnsiCodes.Yellow;
+        break;
+      case "ERROR":
+        color = AnsiCodes.Red;
+        break;
+      default:
+        color = AnsiCodes.Reset;
+    }
+
+    console.log(
+      color +
+        "[" +
+        new Date().toISOString() +
+        ` ${level}` +
+        "] " +
+        AnsiCodes.Reset +
+        msg,
+    );
     for (let pair of pairs) {
       console.log(pair[0]);
       console.log(pair[1]);
     }
-    console.log(`END ${level}: ${msg}`);
+    // End of message
   }
 
   /**
    * Set the logging severity level to control what messages will appear in the
-   * logs.  Messages at or above this severity will be logged.
+   * logs. Messages at or above this severity will be logged.
    *
    * @param level log severity level to use
    */
