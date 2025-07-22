@@ -1,8 +1,17 @@
 {
   "name": "strudel-server",
   "version": "0.1.0",
+  "description": "Simple Playwright-based server with file watching for working on Strudel projects from your favorite text editor.",
+  "bin": {
+    "strudel-server": "./src/main.ts"
+  },
   "scripts": {
-    "start": "bun run src/main.ts"
+    "start": "bun run src/main.ts",
+    "test": "bunx playwright test"
+  },
+  "engines": {
+    "node": ">=16",
+    "bun": ">=1.2.0"
   },
   "dependencies": {
     "@playwright/test": "^1.54.1",

@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 /**
  * strudel-server - Simple Playwright-based server with file watching for working on Strudel projects from your favorite text editor.
  */
@@ -8,7 +10,7 @@ import fs from "fs";
 import path from "path";
 
 /** URL to Strudel REPL. */
-const REPL_URL = "https://strudel.cc/repl";
+const REPL_URL = "https://strudel.cc";
 
 /**
  * Print usage information and exit.
