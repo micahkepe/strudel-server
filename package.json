@@ -1,0 +1,12 @@
+{
+  "name": "strudel-server",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "bun run src/main.ts"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.54.1",
+    "chokidar": "^4.0.3",
+    "playwright": "^1.54.1"
+  }
+}
