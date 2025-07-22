@@ -5,6 +5,7 @@
  */
 import { chromium } from "playwright";
 import { slog } from "./logging/slog";
+import { AnsiCodes } from "./logging/colors";
 import { watch } from "chokidar";
 import fs from "fs";
 import path from "path";
@@ -19,10 +20,17 @@ const REPL_URL = "https://strudel.cc";
  */
 function usage(): never {
   console.log(`
-  Usage: bun run src/main.ts [options] <file>
+  Usage: bun run src/main.ts ${AnsiCodes.Cyan}[options]${AnsiCodes.Reset} <file>
+
+  <file> is the path to a file to watch for changes.
+
   Options:
-    -h, --help       Show this help message and exit
-    -v, -vv, -vvv    Set logging verbosity (default: info)
+    ${AnsiCodes.Cyan}-h${AnsiCodes.Reset}, ${AnsiCodes.Cyan}--help${AnsiCodes.Reset}       Show this help message and exit
+    ${AnsiCodes.Cyan}-v${AnsiCodes.Reset}, ${AnsiCodes.Cyan}-vv${AnsiCodes.Reset}, ${AnsiCodes.Cyan}-vvv${AnsiCodes.Reset}   Set logging verbosity (default: info)
+
+  Examples:
+    ${AnsiCodes.Blue}bun run src/main.ts ~/my-project/song.strudel${AnsiCodes.Reset}
+    ${AnsiCodes.Blue}bun run src/main.ts -v ~/my-project/song.strudel${AnsiCodes.Reset}
   `);
 
   // Exit process
@@ -74,6 +82,17 @@ function parseArgs(args: string[]): ParsedArgs {
  * Run the server.
  */
 (async () => {
+  // Handle SIGINT and SIGTERM
+  process
+    .on("SIGINT", () => {
+      slog.info("Received SIGINT, exiting...");
+      process.exit(0);
+    })
+    .on("SIGTERM", () => {
+      slog.info("Received SIGTERM, exiting...");
+      process.exit(0);
+    });
+
   // Parse command line arguments
   const args = process.argv.slice(2);
   let parsedArgs: ParsedArgs = parseArgs(args);
@@ -91,20 +110,29 @@ function parseArgs(args: string[]): ParsedArgs {
     process.exit(1);
   }
 
+  let contents: string | undefined;
+  contents = fs.readFileSync(filePath, "utf8");
+
   slog.info("Starting strudel-server...");
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
 
   await page.goto(REPL_URL);
 
+  // TODO: Start REPL with initial file content
+
   // Watch for file changes
-  const watcher = watch(filePath, { persistent: true });
+  const watcher = watch(filePath, { persistent: true, awaitWriteFinish: true });
   watcher
     .on("ready", () => slog.info(`Watching ${filePath}`))
     .on("change", (path) => {
       slog.info("File changed: " + path);
 
-      // TODO: copy file contents to REPL and run
+      // Overwrite content in the REPL and re-run
+      contents = fs.readFileSync(filePath, "utf8");
+      slog.debug("Contents: " + contents);
+
+      // TODO: re-run
     })
     .on("error", (error) => {
       slog.error("Watcher error: " + error);
