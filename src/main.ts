@@ -3,7 +3,7 @@
 /**
  * strudel-server - Simple Playwright-based server with file watching for working on Strudel projects from your favorite text editor.
  */
-import { chromium } from "playwright";
+import { chromium, Page } from "playwright";
 import { slog } from "./logging/slog";
 import { AnsiCodes } from "./logging/colors";
 import { watch } from "chokidar";
@@ -12,6 +12,9 @@ import path from "path";
 
 /** URL to Strudel REPL. */
 const REPL_URL = "https://strudel.cc";
+
+// TODO: Update REPL context with new content
+async function updateREPLContext(page: Page, content: string) {}
 
 /**
  * Print usage information and exit.
