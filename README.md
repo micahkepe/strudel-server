@@ -1,8 +1,5 @@
 # Strudel Server 🌀
 
-> [!NOTE]
-> This project is currently in development and is not ready for use.
-
 A lightweight, Playwright-based server with file-watching capabilities for
 seamless development of [Strudel](https://strudel.cc/) projects using your
 preferred text editor.
