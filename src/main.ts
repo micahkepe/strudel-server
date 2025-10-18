@@ -284,15 +284,18 @@ function parseArgs(args: string[]): ParsedArgs {
   let verbosity: number = slog.LevelInfo;
 
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "-h" || args[i] === "--help") {
+    const arg = args[i];
+    if (!arg) continue;
+
+    if (arg === "-h" || arg === "--help") {
       usage();
-    } else if (args[i].startsWith("-v")) {
-      const vCount = args[i].match(/^-v+$/)?.[0].length ?? 0;
+    } else if (arg.startsWith("-v")) {
+      const vCount = arg.match(/^-v+$/)?.[0].length ?? 0;
       verbosity = slog.LevelInfo - vCount;
     } else if (!file) {
-      file = args[i];
+      file = arg;
     } else {
-      console.log("Unknown argument: " + args[i]);
+      console.log("Unknown argument: " + arg);
       usage();
     }
   }
