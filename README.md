@@ -4,7 +4,9 @@ A lightweight, Playwright-based server with file-watching capabilities for
 seamless development of [Strudel](https://strudel.cc/) projects using your
 preferred text editor.
 
-<!-- ![GIF of Strudel Server in action](./images/demo.gif) -->
+<div align="center">
+  <img src="./assets/demo.mp4" alt="Demo of Strudel Server in action" width="600" />
+</div>
 
 ## Motivation
 
