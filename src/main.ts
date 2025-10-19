@@ -175,61 +175,22 @@ async function updateREPLContext(page: Page, content: string) {
     // Wait a moment for CodeMirror to process
     await page.waitForTimeout(100);
 
-    // Trigger evaluation by finding and clicking the play/evaluate button
-    const evaluated = await page.evaluate(() => {
-      // Look for the play/evaluate button
-      // Try various selectors that might match the evaluate button
-      const selectors = [
-        'button[title*="evaluate" i]',
-        'button[aria-label*="evaluate" i]',
-        'button[title*="ctrl+enter" i]',
-        'button:has(svg):has-text("play")',
-        'button svg[class*="play"]',
-        '[role="button"][title*="evaluate" i]',
-      ];
+    // Trigger evaluation by clicking play or update button
+    // If song is playing, button shows "update"; if stopped, shows "play"
+    try {
+      const updateButton = page.getByRole("button", { name: "update" });
+      const playButton = page.getByRole("button", { name: "play" });
 
-      for (const selector of selectors) {
-        try {
-          const button = document.querySelector(selector);
-          if (button instanceof HTMLElement) {
-            button.click();
-            return { success: true, selector };
-          }
-        } catch (e) {
-          // Continue to next selector
-        }
+      // Check which button is visible and click it
+      if (await updateButton.isVisible()) {
+        await updateButton.click();
+        slog.debug("Evaluation triggered via update button");
+      } else {
+        await playButton.click();
+        slog.debug("Evaluation triggered via play button");
       }
-
-      // Fallback: look for any button with play-related content
-      const allButtons = Array.from(document.querySelectorAll("button"));
-      for (const button of allButtons) {
-        const text = (button.textContent || "").toLowerCase();
-        const title = (button.getAttribute("title") || "").toLowerCase();
-        const ariaLabel = (
-          button.getAttribute("aria-label") || ""
-        ).toLowerCase();
-
-        if (
-          text.includes("play") ||
-          text.includes("eval") ||
-          title.includes("play") ||
-          title.includes("eval") ||
-          title.includes("ctrl") ||
-          ariaLabel.includes("play") ||
-          ariaLabel.includes("eval")
-        ) {
-          button.click();
-          return { success: true, selector: "text-based-search" };
-        }
-      }
-
-      return { success: false };
-    });
-
-    if (evaluated.success) {
-      slog.debug(`Evaluation triggered via ${evaluated.selector}`);
-    } else {
-      slog.warn("Could not find evaluate button, trying keyboard shortcut");
+    } catch (error) {
+      slog.warn("Could not find play/update button, trying keyboard shortcut");
       // Fallback to keyboard shortcut
       await page.click("#code .cm-content");
       await page.keyboard.press("Control+Enter");
