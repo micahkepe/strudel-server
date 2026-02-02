@@ -208,17 +208,17 @@ async function updateREPLContext(page: Page, content: string) {
  */
 function usage(): never {
   console.log(`
-  Usage: bun run src/main.ts ${AnsiCodes.Cyan}[options]${AnsiCodes.Reset} <file>
+  Usage: strudel-server ${AnsiCodes.Cyan}[options]${AnsiCodes.Reset} <file>
 
   <file> is the path to a file to watch for changes.
 
   Options:
-    ${AnsiCodes.Cyan}-h${AnsiCodes.Reset}, ${AnsiCodes.Cyan}--help${AnsiCodes.Reset}       Show this help message and exit
-    ${AnsiCodes.Cyan}-v${AnsiCodes.Reset}, ${AnsiCodes.Cyan}-vv${AnsiCodes.Reset}, ${AnsiCodes.Cyan}-vvv${AnsiCodes.Reset}   Set logging verbosity (default: info)
+    ${AnsiCodes.Cyan}-h${AnsiCodes.Reset}, ${AnsiCodes.Cyan}--help${AnsiCodes.Reset}\t\tShow this help message and exit
+    ${AnsiCodes.Cyan}-v${AnsiCodes.Reset}, ${AnsiCodes.Cyan}-vv${AnsiCodes.Reset}, ${AnsiCodes.Cyan}-vvv${AnsiCodes.Reset}\tSet logging verbosity (default: info)
 
   Examples:
-    ${AnsiCodes.Blue}bun run src/main.ts ~/my-project/song.strudel${AnsiCodes.Reset}
-    ${AnsiCodes.Blue}bun run src/main.ts -v ~/my-project/song.strudel${AnsiCodes.Reset}
+    ${AnsiCodes.Blue}strudel-server ~/my-project/song.strudel${AnsiCodes.Reset}
+    ${AnsiCodes.Blue}strudel-server -v ~/my-project/song.strudel${AnsiCodes.Reset}
   `);
 
   // Exit process

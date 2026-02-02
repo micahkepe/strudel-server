@@ -62,14 +62,15 @@ strudel-server <file>
 **Workflow**:
 
 1. Open a Strudel project in your favorite text editor.
-2. Run the server with `bun run src/main.ts <file>`.
+2. Run the server with `bun run src/main.ts <file>` (or `strudel-server <file>`
+   if you installed the binary globally).
 3. Save changes in your editor, and the server will automatically reload the
    project.
 
 **CLI usage**:
 
 ```
-Usage: bun run src/main.ts [options] <file>
+Usage: strudel-server [options] <file>
 
 <file> is the path to a file to watch for changes.
 
@@ -78,8 +79,8 @@ Options:
   -v, -vv, -vvv    Set logging verbosity (default: info)
 
 Examples:
-  bun run src/main.ts ~/my-project/song.strudel
-  bun run src/main.ts -v ~/my-project/song.strudel
+  strudel-server ~/my-project/song.strudel
+  strudel-server -v ~/my-project/song.strudel
 ```
 
 ## License
